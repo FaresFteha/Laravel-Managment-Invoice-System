@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="app_name">اسم التطبيق:*</label>
                             <input class="form-control" id="app_name" name="app_name" type="text"
-                                value="{{ $setting['app_name'] }}" class="@error('app_name') is-invalid @enderror" />
+                                value="{{ $collection->app_name }}" class="@error('app_name') is-invalid @enderror" />
                             @error('app_name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -58,7 +58,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="company_name">اسم الشركة*</label>
                             <input class="form-control" id="company_name" name="company_name" type="text"
-                                value="{{ $setting['company_name'] }}"
+                                value="{{ $collection->company_name }}"
                                 class="@error('company_name') is-invalid @enderror" />
                             @error('company_name')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -68,7 +68,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="email">البريد الالكتروني*</label>
                             <input class="form-control" id="email" name="email" type="email" autocomplete="off"
-                                value="{{ $setting['email'] }}" class="@error('email') is-invalid @enderror" />
+                                value="{{ $collection->email }}" class="@error('email') is-invalid @enderror" />
                             @error('email')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -77,7 +77,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="phone">رقم الجوال</label>
                             <input type="text" id="phone" name="phone" class="form-control" autocomplete="off"
-                                value="{{ $setting['phone'] }}" class="@error('phone') is-invalid @enderror" />
+                                value="{{ $collection->phone }}" class="@error('phone') is-invalid @enderror" />
                             @error('phone')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -85,7 +85,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="address">العنوان</label>
                             <input class="form-control" id="address" name="address" type="text"
-                                class="@error('address') is-invalid @enderror" value="{{ $setting['address'] }}" />
+                                class="@error('address') is-invalid @enderror" value="{{ $collection->address }}" />
                             @error('address')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -94,7 +94,8 @@
                         <div class="col-md-6">
                             <label class="form-label" for="postal_code">الرمز البريدي</label>
                             <input class="form-control" id="postal_code" name="postal_code" type="text"
-                                class="@error('postal_code') is-invalid @enderror" value="{{ $setting['postal_code'] }}" />
+                                class="@error('postal_code') is-invalid @enderror"
+                                value="{{ $collection->postal_code }}" />
                             @error('postal_code')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -116,7 +117,7 @@
                             </div>
                             <div class="mb-3">
                                 <img style="width: 100px" height="100px"
-                                    src="{{ URL::asset('storage/Attachments/Logo/' . $setting['photo']) }}"
+                                    src="{{ URL::asset('storage/Attachments/Logo/' . $collection->photo) }}"
                                     alt="شعار التطبيق" />
                             </div>
                             @error('photo')

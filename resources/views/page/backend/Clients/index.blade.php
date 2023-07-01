@@ -53,7 +53,7 @@
                                     @endcan
                                 </div>
                             </div>
-                         
+
                             <div class="table-responsive scrollbar">
                                 @include('page.backend.Clients.Filters.filtre')
                                 <table class="table mb-0">
@@ -75,7 +75,9 @@
                                                             src="{{ asset('storage/Attachments/Client-Attachments/' . $items->photo) }}"
                                                             width="60" height="60" alt="{{ $items->name }}">
                                                     @else
-                                                        {{ $items->photo }}
+                                                        <img class="rounded-circle shadow-sm"
+                                                            src="{{ asset('asset/backend/src/img/team/avatar.png') }}"
+                                                            width="60" height="60" alt="{{ $items->name }}">
                                                     @endif
                                                 </th>
                                                 <th class="align-middle">{{ $items->email }}<br>

@@ -19,13 +19,13 @@ class SettingSeeder extends Seeder
         DB::table('settings')->delete();
 
         $data = [
-            ['key' => 'app_name', 'value' => 'PyInvoice'],
-            ['key' => 'company_name', 'value' => 'Company name'],
-            ['key' => 'email', 'value' => 'faresfteha21@gmail.com'],
-            ['key' => 'phone', 'value' => '+972597107791'],
-            ['key' => 'address', 'value' => 'Palestine - Gaza'],
-            ['key' => 'postal_code', 'value' => '+954'],
-            ['key' => 'photo', 'value' => 'logo.png'],
+            'app_name' => 'PyInvoice',
+            'company_name' => 'Company name',
+            'email' => 'company_name@gmail.com',
+            'phone' => '+972597107791',
+            'address' => 'Palestine - Gaza',
+            'postal_code' => '+954',
+            'photo' => 'logo.png',
         ];
         DB::table('settings')->insert($data);
     }

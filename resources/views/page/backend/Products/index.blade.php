@@ -75,7 +75,7 @@
                                                             width="60" height="60" alt="{{ $items->name }}">
                                                     @else
                                                         <img class="rounded-circle shadow-sm"
-                                                            src="{{ asset('asset/backend/src/img/illustrations/corner-5.png' . $items->photo) }}"
+                                                            src="{{ asset('asset/backend/src/img/illustrations/bg-shape.png' . $items->photo) }}"
                                                             width="60" height="60" alt="{{ $items->name }}">
                                                     @endif
                                                 </th>

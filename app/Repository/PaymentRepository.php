@@ -6,6 +6,7 @@ use Mpdf\Mpdf;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\RepositoryInterface\PaymentRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentRepository implements PaymentRepositoryInterface
 {
@@ -15,19 +16,19 @@ class PaymentRepository implements PaymentRepositoryInterface
         // Retrieve all Invoice records from the database, paginated with 10 records per page
         $Incoices = Invoice::query()
 
-        // Use the `when` method to conditionally execute a statement based on a boolean value
-        // If the 'keyword' field is not null, call the `search()` function with its value as an argument.
-        ->when(\request()->keyword != null, function ($query) {
-            $query->search(\request()->keyword);
-        })
+            // Use the `when` method to conditionally execute a statement based on a boolean value
+            // If the 'keyword' field is not null, call the `search()` function with its value as an argument.
+            ->when(\request()->keyword != null, function ($query) {
+                $query->search(\request()->keyword);
+            })
 
-        // Use the `orderBy` method to sort the results based on the values of 'sort_by' and 'order_by' parameters in the request.
-        // The default sorting column will be 'id', and the default sorting order will be 'desc'.
-        ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
+            // Use the `orderBy` method to sort the results based on the values of 'sort_by' and 'order_by' parameters in the request.
+            // The default sorting column will be 'id', and the default sorting order will be 'desc'.
+            ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
 
-        // Use the `paginate` method to retrieve results and paginate them based on the value of 'limit_by' parameter in the request.
-        // The default limit per page will be 10.
-        ->paginate(\request()->limit_by ?? 10);
+            // Use the `paginate` method to retrieve results and paginate them based on the value of 'limit_by' parameter in the request.
+            // The default limit per page will be 10.
+            ->paginate(\request()->limit_by ?? 10);
 
         // Render the index view and pass it a variable called $Incoices that contains the paginated Invoice records
         return view('page.backend.Invoices.InvoicePayment.index', compact('Incoices'));
@@ -47,20 +48,29 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         try {
             //code...
-            $invoice_Id = $request->id;
-            $payment_total =  $request->amount - $request->payment_amount;
+            $invoice_Id = getInvoice($request->id);
+
+            $payment_total =  $request->remaining_amount - $request->payment_amount;
+
+            $invoice_Id->update([
+                "remaining_amount" => $payment_total,
+            ]);
 
             // Create a new Payment instance
+            $invoice_Id2 = $request->id;
             $payment = new Payment();
             // Set the relevant properties of the Payment instance
-            $payment->invoice_id = $invoice_Id;
+            $payment->invoice_id = $invoice_Id2;
+
             $payment->amount = $request->amount;
-            $payment->payment_total =  $payment_total;
             $payment->payment_amount = $request->payment_amount;
+            $payment->payment_total =  $payment_total;
+
             $payment->payment_date = $request->payment_date;
             $payment->payment_mode = $request->payment_mode;
             $payment->status = $request->status;
-            $payment->created_by = 'Fares Fteha';
+            $payment->created_by = Auth::user()->name;
+
             // Save the new Payment instance to the database
             $payment->save();
 
@@ -97,18 +107,27 @@ class PaymentRepository implements PaymentRepositoryInterface
             // The code inside this try block attempts to execute without errors
 
             // Getting invoice id and calculating payment_total
-            $invoice_Id = $request->id;
-            $payment_total =  $request->amount - $request->payment_amount;
+
+            $invoice_Id = getInvoice($request->invoice_id);
+
+            $payment_total =  $request->remaining_amount - $request->payment_amount;
+
+            $invoice_Id->update([
+                "remaining_amount" => $payment_total,
+            ]);
+
 
             // Retrieving the Payment instance with the ID passed in the request, and updating its attributes
             $payment = Payment::findOrfail($request->id);
+
             $payment->amount = $request->amount;
             $payment->payment_total = $payment_total;
             $payment->payment_amount = $request->payment_amount;
+
             $payment->payment_date = $request->payment_date;
             $payment->payment_mode = $request->payment_mode;
             $payment->status = $request->status;
-            $payment->created_by = 'Fares Fteha';
+            $payment->created_by = Auth::user()->name;
 
             // Saving the updated Payment instance to the database
             $payment->save();
@@ -127,6 +146,17 @@ class PaymentRepository implements PaymentRepositoryInterface
 
     public function destroy($request)
     {
+
+        // Befor delete plise the value payment on amonunt
+
+        $invoice_Id = getInvoice($request->invoice_id);
+
+        $payment_total =  $request->payment_amount +  $request->remaining_amount;
+
+        $invoice_Id->update([
+            "remaining_amount" => $payment_total,
+        ]);
+
         // The Payment with the specified ID is deleted
         Payment::destroy($request->id);
 

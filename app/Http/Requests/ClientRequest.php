@@ -30,7 +30,6 @@ class ClientRequest extends FormRequest
             'last_name' => 'required',
             'password' => 'required|same:password2',
             'password2' => 'required',
-            'photo' => 'required',
             'postal_code' => 'required',
             'address' => 'required',
         ];
@@ -44,7 +43,6 @@ class ClientRequest extends FormRequest
             'last_name' => 'الاسم الثاني',
             'password' => 'كلمة السر',
             'password2' => 'تاكيد كلمة السر',
-            'photo' => 'صورة العميل',
             'postal_code' => 'الرمز البريدي',
             'address' => 'العنوان',
         ];

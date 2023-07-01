@@ -5,21 +5,18 @@
     <a class="navbar-brand me-1 me-sm-3" href="{{ route('home') }}">
         <div class="d-flex align-items-center">
             <?php
-            $collection = \App\Models\Setting::all();
-            $setting['setting'] = $collection->flatMap(function ($collection) {
-                return [$collection->key => $collection->value];
-            });
+            $setting = App\Models\Setting::firstwhere('id', 1);
             ?>
-            @if (isset($setting['photo']))
-                <img class="me-2" src="{{ URL::asset('storage/Attachments/Logo/' . $setting['photo']) }}"
+            @if (isset($setting->photo))
+                <img class="me-2" src="{{ URL::asset('storage/Attachments/Logo/' . $setting->photo) }}"
                     alt="Logo" width="40" />
             @else
                 <img class="me-2" src="{{ URL::asset('asset/backend/src/img/icons/spot-illustrations/falcon.png') }}"
                     alt="Logo" width="40" />
             @endif
             <span class="font-sans-serif">
-                @if (isset($setting['app_name']))
-                    {{ $setting['app_name'] }}
+                @if (isset($setting->app_name))
+                    {{ $setting->app_name }}
                 @endif
             </span>
         </div>

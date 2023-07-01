@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignId('tax_id')->constrained();
             $table->string('value_vat');
             $table->string('amount');
+            $table->string('remaining_amount');
             $table->string('status', 50);
             $table->integer('value_status');
             $table->string('created_by');

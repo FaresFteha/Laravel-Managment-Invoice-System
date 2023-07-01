@@ -91,10 +91,7 @@
 
                         <div class="col-md-6">
                             <label class="form-label" for="password">كلمة السر</label>
-                            <input class="form-control" type="password" id="password" name="password" autocomplete="off"
-                                aria-label="password" data-toggle="password"
-                                value="{{ old('password', $Client->password) }}"
-                                class="@error('password') is-invalid @enderror">
+                            <input class="form-control" type="password" id="password" name="password"> 
                             <div class="col-sm-9">
                                 <input type="checkbox" class="form-check-input" onclick="Password()" id="exampleCheck1">
                                 <label class="form-check-label" for="exampleCheck1">عرض كلمة السر</label>
@@ -104,8 +101,7 @@
                         <div class="col-md-6">
                             <label class="form-label" for="password">تاكيد السر</label>
                             <input class="form-control" type="password" id="password2" name="password2"
-                                autocomplete="off" aria-label="password" data-toggle="password"
-                                value="{{ old('password2', $Client->password) }}">
+                                autocomplete="off" aria-label="password" data-toggle="password" >
                             <div class="col-sm-9">
                                 <input type="checkbox" class="form-check-input" onclick="confirmPassword()"
                                     id="exampleCheck1">
@@ -158,22 +154,31 @@
 
                         {{-- About Photo --}}
                         <div class="col-md-6">
-                            <label class="col-form-label" for="photos">الصورة الشحصية:<small style="color: red">أنواع الملفات المسموح بها: png, jpg, jpeg.</small></label>
+                            <label class="col-form-label" for="photos">الصورة الشحصية:<small style="color: red">أنواع
+                                    الملفات المسموح بها: png, jpg, jpeg.</small></label>
 
                             <div class="col-sm-10">
                                 <input class="form-control" id="photo" name="photo" type="file"
                                     accept="image/*" data-fouc />
                             </div>
                             <div class="mb-3">
-                                <img class="rounded-circle shadow-sm" style="width: 100px" height="100px"
-                                    src="{{ asset('storage/Attachments/Client-Attachments/' . $Client->photo) }}"
-                                    alt="الصورة الشخصية" />
+                                @if ($Client->photo)
+                                    <img class="rounded-circle shadow-sm" style="width: 100px" height="100px"
+                                        src="{{ asset('storage/Attachments/Client-Attachments/' . $Client->photo) }}"
+                                        alt="الصورة الشخصية" />
+                                @else
+                                    <img class="rounded-circle shadow-sm"
+                                        src="{{ asset('asset/backend/src/img/team/avatar.png') }}" width="100"
+                                        height="100" alt="{{ $items->name }}">
+                                @endif
+
                             </div>
                         </div>
 
-                        <div class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
+                        <div
+                            class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
                             <button class="btn btn-primary mt-3 px-5" type="submit">تحديث &amp; عميل</button>
-                          </div>
+                        </div>
                     </form>
                 </div>
             </div>

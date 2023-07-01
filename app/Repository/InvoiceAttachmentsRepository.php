@@ -21,7 +21,7 @@ class InvoiceAttachmentsRepository implements InvoiceAttachmentsRepositoryInterf
         //Variables specific tp Invoice Attachments
         $Request_Invoice_Id = $request->invoice_id;
         $Request_Invoice_Number = $request->invoices_numbers;
-        $Request_Created_By = 'FaresFteha';
+        $Request_Created_By = Auth::user()->name;
 
         //Inseert in Invoice Attachments 
         $invoiceAttachments = new Invoice_attachment();

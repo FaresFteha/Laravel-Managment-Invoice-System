@@ -15,6 +15,12 @@
                         @csrf
                         @method('PUT')
                         <input type="hidden" id="id" name="id" value="{{ $items->id }}">
+                        <input type="hidden" id="invoice_id" name="invoice_id" value="{{ $items->invoice->id }}">
+                        <input type="hidden" id="remaining_amount" name="remaining_amount"
+                            value="{{ $items->invoice->remaining_amount }}">
+                            <input type="hidden" id="remaining_amount" name="remaining_amount"
+                            value="{{ $items->invoice->remaining_amount }}">
+
                         <div class="row">
                             <div class="col">
                                 <label for="amount">المبلغ الاجمالي:</label>
@@ -50,8 +56,10 @@
 
                             <div class="col">
                                 <label class="form-label" for="status">الحالة</label>
-                                <select class="form-select" id="status" name="status" value="{{ old('status') }}" required>
-                                    <option value="{{ $items->status }}" selected disabled>{{ $items->status }}</option>
+                                <select class="form-select" id="status" name="status" value="{{ old('status') }}"
+                                    required>
+                                    <option value="{{ $items->status }}" selected disabled>{{ $items->status }}
+                                    </option>
                                     <option value="غير مدفوعة">غير مدفوعة</option>
                                     <option value="مدفوع">مدفوع</option>
                                     <option value="مدفوع جزئياً">مدفوع جزئياً</option>

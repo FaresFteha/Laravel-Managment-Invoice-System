@@ -83,6 +83,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             $invoice->tax_id = $request->tax_id;
             $invoice->value_vat = $request->value_vat;
             $invoice->amount = $request->amount;
+            $invoice->remaining_amount = $request->amount;
             $invoice->created_by = Auth::user()->name;
 
             // Save the new invoice to the database.

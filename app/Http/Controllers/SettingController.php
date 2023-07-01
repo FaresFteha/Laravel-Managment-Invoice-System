@@ -19,30 +19,32 @@ class SettingController extends Controller
     use AttachFilesTrait;
     public function index()
     {
-        $collection = Setting::all();
-        $setting['setting'] = $collection->flatMap(function ($collection) {
-            return [$collection->key => $collection->value];
-        });
-        return view('page.backend.setting.index', $setting);
+        $collection = Setting::firstwhere('id', 1);
+        return view('page.backend.setting.index', compact('collection'));
     }
 
-    
+
 
     //Hero-Section-updating 
     public function updateSetting(Request $request)
     {
 
-        try {
-            $info = $request->except('_token', '_method', 'photo');
-            foreach ($info as $key => $value) {
-                Setting::where('key', $key)->update(['value' => $value]);
-            }
 
+        try {
+            $Setting = Setting::firstwhere('id', 1);
+            $Setting->app_name = $request->app_name;
+            $Setting->company_name = $request->company_name;
+            $Setting->email = $request->email;
+            $Setting->phone = $request->phone;
+            $Setting->address = $request->address;
+            $Setting->postal_code = $request->postal_code;
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo')->getClientOriginalName();
-                Setting::where('key', 'photo')->update(['value' => $photo]);
+                $Setting->photo = $photo;
                 $this->uploadFile($request, 'photo', 'Logo');
             }
+            $Setting->save();
+
             toastr()->success('تم تعديل البيانات!');
             return back();
         } catch (\Exception $e) {
@@ -50,6 +52,7 @@ class SettingController extends Controller
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }
     } //endHero-Section-updating 
+
 
     public function clearCache()
     {

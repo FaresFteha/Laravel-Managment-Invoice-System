@@ -29,7 +29,6 @@ class ProductRequest extends FormRequest
             'name' => 'required',
             'category_id' => 'required',
             'unit_price' => 'required|numeric',
-            'photo' => 'required',
         ];
     }
     public function attributes()
@@ -39,7 +38,6 @@ class ProductRequest extends FormRequest
             'name' => 'اسم المنتج',
             'category_id' => 'فئة المنتج',
             'unit_price' => 'سعر الوحدة',
-            'photo' => 'صورة المنتج',
         ];
     }
 }

@@ -21,19 +21,19 @@
         ?>
         <a class="navbar-brand" href="../index.html">
             <div class="d-flex align-items-center py-3">
-                @if (isset($setting['photo']))
-                    <img class="me-2" src="{{ URL::asset('storage/Attachments/Logo/' . $setting['photo']) }}"
+                <?php
+                $setting = App\Models\Setting::firstwhere('id', 1);
+                ?>
+                @if (isset($setting->photo))
+                    <img class="me-2" src="{{ URL::asset('storage/Attachments/Logo/' . $setting->photo) }}"
                         alt="Logo" width="40" />
                 @else
-                    <img class="me-2"
-                        src="{{ URL::asset('asset/backend/src/img/icons/spot-illustrations/falcon.png') }}"
+                    <img class="me-2" src="{{ URL::asset('asset/backend/src/img/icons/spot-illustrations/falcon.png') }}"
                         alt="Logo" width="40" />
                 @endif
                 <span class="font-sans-serif">
-                    @if (isset($setting['app_name']))
-                        {{ $setting['app_name'] }}
-                    @else
-                    {{ 'Fatora'}}
+                    @if (isset($setting->app_name))
+                        {{ $setting->app_name }}
                     @endif
                 </span>
             </div>

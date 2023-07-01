@@ -17,10 +17,21 @@
                         <div class="mb-3">
                             <input type="hidden" id="id" name="id" value="{{ $items->id }}" />
                         </div>
+
+                        <div class="mb-3">
+                            <input type="hidden" id="invoice_id" name="invoice_id" value="{{ $items->invoice->id }}" />
+                        </div>
+
+                        <input type="hidden" id="remaining_amount" name="remaining_amount"
+                            value="{{ $items->invoice->remaining_amount }}">
+
+                        <input type="hidden" id="payment_amount" name="payment_amount"
+                            value="{{ $items->payment_amount }}">
+
                         <h5 style="color: rgb(233, 0, 0)">هل انت متاكد من هذه العملية؟</h5>
                         <div class="mb-3">
                             <input class="form-control" type="text" id="name" name="name"
-                                value="{{ $items->invoice->invoice_number  }}" readonly />
+                                value="{{ $items->invoice->invoice_number }}" readonly />
                         </div>
 
                 </div>

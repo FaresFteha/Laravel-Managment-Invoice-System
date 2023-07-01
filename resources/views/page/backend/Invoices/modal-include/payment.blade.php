@@ -14,11 +14,18 @@
                         <form action="{{ route('payment.store') }}" method="POST">
                             @csrf
                             <input type="hidden" id="id" name="id" value="{{ $items->id }}">
+                            <input type="hidden" id="remaining_amount" name="remaining_amount" value="{{ $items->remaining_amount }}">
                             <div class="row">
+                                @php
+                                $Invoice = App\Models\Invoice::where('id', $items->id)
+                                    ->latest()
+                                    ->first();
+                            @endphp
                                 <div class="col">
                                     <label for="amount">المبلغ الاجمالي:</label>
                                     <input class="form-control" type="text" placeholder="المبلغ الاجمالي"
-                                        id="amount" name="amount" value="{{ $items->amount }}" readonly />
+                                        id="amount" name="amount"
+                                        value="{{ $Invoice->amount }}" readonly />
                                 </div>
                                 @php
                                     $Payment = App\Models\Payment::where('invoice_id', $items->id)
@@ -35,7 +42,7 @@
                                 <div class="col">
                                     <label for="payment_amount">المبلغ:</label>
                                     <input class="form-control" type="text" placeholder="المبلغ" id="payment_amount"
-                                        name="payment_amount" required/>
+                                        name="payment_amount" required />
                                 </div>
                             </div>
 

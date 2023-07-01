@@ -89,6 +89,7 @@
                                             <th class="align-middle">تاريخ الاستحقاق</th>
                                             <th class="align-middle">السعر</th>
                                             <th class="align-middle">السعر النهائي</th>
+                                            <th class="align-middle">المتبقي</th>
                                             <th class="align-middle">الحالة</th>
                                             <th class="align-middle white-space-nowrap pe-3">العمليات</th>
                                         </tr>
@@ -107,6 +108,8 @@
                                                 <th class="align-middle">{{ $items->due_date }}</th>
                                                 <th class="align-middle">${{ $items->unit_price }}</th>
                                                 <th class="align-middle">${{ $items->amount }}</th>
+                                                <th class="align-middle">${{ $items->remaining_amount }}</th>
+                                               
                                                 <!-- Start Status value  -->
                                                 @if ($items->value_status == 1)
                                                     <th class="align-middle"><span class="badge bg-warning">تحت
@@ -167,11 +170,19 @@
                                                                 الحالات الخاصة</a>
                                                         @endcan
 
+                                                        <?php
+                                                        $payments = App\Models\Payment::pluck('payment_amount');
+                                                        ?>
                                                         @can('دفع الفواتير')
-                                                            <a class="dropdown-item" type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#payment-modal{{ $items->id }}"
-                                                                data-bs-placement="top"><i class="fas fa-money-bill-alt"
-                                                                    style="color: rgb(21, 199, 89)"></i> دفع الفاتورة</a>
+                                                            @if ($items->amount == $payments)
+                                                                {{ 'Fares' }}
+                                                            @else
+                                                                <a class="dropdown-item" type="button"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#payment-modal{{ $items->id }}"
+                                                                    data-bs-placement="top"><i class="fas fa-money-bill-alt"
+                                                                        style="color: rgb(21, 199, 89)"></i> دفع الفاتورة</a>
+                                                            @endif
                                                         @endcan
 
                                                         @can('تحميل وطباعة الفواتير')

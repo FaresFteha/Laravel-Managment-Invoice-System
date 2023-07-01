@@ -112,16 +112,16 @@
                             <label class="col-form-label" for="photos">صورة المنتج:<small style="color: red">أنواع الملفات المسموح بها: png, jpg, jpeg.</small></label>
                             <div class="col-sm-10">
                                 <input class="form-control" id="photo" name="photo" type="file" accept="image/*"
-                                    data-fouc />
+                                value="{{ $products->photo }}"  data-fouc  />
                             </div>
                             <div class="mb-3">
                                 <img class="rounded-circle shadow-sm" style="width: 100px" height="100px"
                                     src="{{ asset('storage/Attachments/Product-Attachments/' . $products->photo) }}"
                                     alt="صورة المنتج" />
                             </div>
-                            @error('photo')
+                            {{-- @error('photo')
                                 <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            @enderror --}}
                             <br>
                             <div class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
                                 <button class="btn btn-primary mt-3 px-5" type="submit">تحديث &amp; منتج</button>

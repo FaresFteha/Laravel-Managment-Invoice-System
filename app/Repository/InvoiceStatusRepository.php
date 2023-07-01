@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use Mpdf\Mpdf;
+use App\Models\User;
 use App\Models\Invoice;
 use App\Models\Invoice_statu;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\InvoiceStatusChange;
+use Illuminate\Support\Facades\Notification;
 use App\RepositoryInterface\InvoiceStatusRepositoryInterface;
 
 class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
@@ -14,19 +18,19 @@ class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
     {
         $Incoices = Invoice::query()
 
-        // Use the `when` method to conditionally execute a statement based on a boolean value
-        // If the 'keyword' field is not null, call the `search()` function with its value as an argument.
-        ->when(\request()->keyword != null, function ($query) {
-            $query->search(\request()->keyword);
-        })
+            // Use the `when` method to conditionally execute a statement based on a boolean value
+            // If the 'keyword' field is not null, call the `search()` function with its value as an argument.
+            ->when(\request()->keyword != null, function ($query) {
+                $query->search(\request()->keyword);
+            })
 
-        // Use the `orderBy` method to sort the results based on the values of 'sort_by' and 'order_by' parameters in the request.
-        // The default sorting column will be 'id', and the default sorting order will be 'desc'.
-        ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
+            // Use the `orderBy` method to sort the results based on the values of 'sort_by' and 'order_by' parameters in the request.
+            // The default sorting column will be 'id', and the default sorting order will be 'desc'.
+            ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
 
-        // Use the `paginate` method to retrieve results and paginate them based on the value of 'limit_by' parameter in the request.
-        // The default limit per page will be 10.
-        ->paginate(\request()->limit_by ?? 10);
+            // Use the `paginate` method to retrieve results and paginate them based on the value of 'limit_by' parameter in the request.
+            // The default limit per page will be 10.
+            ->paginate(\request()->limit_by ?? 10);
         return view('page.backend.Invoices.Invoicestatus.index', compact('Incoices'));
     }
 
@@ -71,7 +75,7 @@ class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
                     'invoice_id' =>  $request->id,
                     'status' => $request->status,
                     'value_status' => 1,
-                    'created_by' => 'FaresFteha',
+                    'created_by' => Auth::user()->name,
                 ]);
             }
             // If the invoice status is "مرفوض", update its value_status to 6 and create a new Invoice_statu record
@@ -85,7 +89,7 @@ class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
                     'invoice_id' => $request->id,
                     'status' => $request->status,
                     'value_status' => 6,
-                    'created_by' => 'FaresFteha',
+                    'created_by' => Auth::user()->name,
                 ]);
             } elseif ($request->status === "ألغيت") {
                 $invoice_ID->update([
@@ -97,7 +101,7 @@ class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
                     'invoice_id' => $request->id,
                     'status' => $request->status,
                     'value_status' => 7,
-                    'created_by' => 'FaresFteha',
+                    'created_by' => Auth::user()->name,
                 ]);
             }
             // If the invoice status is anything else, update its value_status to 7 and create a new Invoice_statu record
@@ -111,9 +115,17 @@ class InvoiceStatusRepository implements InvoiceStatusRepositoryInterface
                     'invoice_id' => $request->id,
                     'status' => $request->status,
                     'value_status' => 8,
-                    'created_by' => 'FaresFteha',
+                    'created_by' => Auth::user()->name,
                 ]);
             }
+
+            $user = User::get(); //send notify all users
+            //  $user = User::find(Auth::user()->id);//send notify all users
+            $invoiceId = Invoice_statu::latest()->first();
+
+            // The following line of code creates a new invoice and notifies the user associated with the invoice
+            // assuming $user and $invoiceId variables are already defined
+            Notification::send($user, new InvoiceStatusChange($invoiceId)); //sent notify to for many user
 
             // Display success message and redirect to invoices index page
             toastr()->success('تم تحديث حالة الفاتورة,العملية ناجحة.');

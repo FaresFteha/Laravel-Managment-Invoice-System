@@ -68,6 +68,7 @@
                                             <th class="align-middle">المبلغ الاساسي</th>
                                             <th class="align-middle">المبلغ المدفوع</th>
                                             <th class="align-middle">المبلغ بعد الدفع</th>
+                                            <th class="align-middle">المتبقي</th>
                                             <th class="align-middle">نوع الدفع</th>
                                             <th class="align-middle">حالة الدفع</th>
                                             <th class="align-middle"> تاريخ الدفع</th>
@@ -83,6 +84,7 @@
                                                 <th class="align-middle">${{ $items->amount }}</th>
                                                 <th class="align-middle">${{ $items->payment_amount }}</span< /th>
                                                 <th class="align-middle">${{ $items->payment_total }}</th>
+                                                <th class="align-middle">${{ $items->invoice->remaining_amount }}</th>
                                                 <th class="align-middle">{{ $items->payment_mode }}</th>
                                                 <!-- Start Status value  -->
                                                 @if ($items->status == 'غير مدفوعة')
@@ -115,10 +117,10 @@
                                                         @endcan
 
                                                         @can('تعديل المدفوعات')
-                                                            <button class="btn p-0" type="button" data-bs-placement="top"
+                                                            {{-- <button class="btn p-0" type="button" data-bs-placement="top"
                                                                 title="تعديل" type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#edit-modal{{ $items->id }}">
-                                                                <span class="text-500 fas fa-edit"></span></button>
+                                                                <span class="text-500 fas fa-edit"></span></button> --}}
                                                         @endcan
 
                                                         @can('حذف المدفوعات')

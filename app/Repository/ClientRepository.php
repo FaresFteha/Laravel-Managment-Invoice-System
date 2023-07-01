@@ -4,8 +4,9 @@ namespace App\Repository;
 
 
 use App\Models\Client;
-use App\Http\Traits\AttachFilesTrait;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Traits\AttachFilesTrait;
 use App\RepositoryInterface\ClientRepositoryInterface;
 
 class ClientRepository implements ClientRepositoryInterface
@@ -51,7 +52,7 @@ class ClientRepository implements ClientRepositoryInterface
             $Client->last_name = $request->last_name;
             $Client->email = $request->email;
             $Client->phone = $request->phone;
-            $Client->password = $request->password;
+            $Client->password =  Hash::make($request->password);
             $Client->country_id = $request->country_id;
             $Client->state_id = $request->state_id;
             $Client->city_id = $request->city_id;
@@ -113,37 +114,65 @@ class ClientRepository implements ClientRepositoryInterface
         try {
             $Client = Client::findorFail($request->id);
             // Find the Client with the specified id using the `findOrFail()` static method and assign it to the `$Client` variable.
+            if (!empty($request->password)) {
+                $Client->first_name = $request->first_name;
+                $Client->last_name = $request->last_name;
+                $Client->email = $request->email;
+                $Client->phone = $request->phone;
+                $Client->country_id = $request->country_id;
+                $Client->state_id = $request->state_id;
+                $Client->city_id = $request->city_id;
+                $Client->postal_code = $request->postal_code;
+                $Client->address = $request->address;
+                $Client->password =  Hash::make($request->password);
+                // Update the properties of the `$Client` object based on the form data received via the `$request` parameter.
 
-            $Client->first_name = $request->first_name;
-            $Client->last_name = $request->last_name;
-            $Client->email = $request->email;
-            $Client->phone = $request->phone;
-            $Client->password = $request->password;
-            $Client->country_id = $request->country_id;
-            $Client->state_id = $request->state_id;
-            $Client->city_id = $request->city_id;
-            $Client->postal_code = $request->postal_code;
-            $Client->address = $request->address;
+                if ($request->hasFile('photo')) {
+                    // Check if a photo was uploaded through the request via the `hasFile()` method.
 
-            // Update the properties of the `$Client` object based on the form data received via the `$request` parameter.
+                    $this->deleteFile($Client->photo);
+                    // Delete the previously uploaded photo file from the server using the `deleteFile()` function.
 
-            if ($request->hasFile('photo')) {
-                // Check if a photo was uploaded through the request via the `hasFile()` method.
+                    $photo = $request->file('photo')->getClientOriginalName();
+                    $Client->photo = $photo;
+                    // Retrieve the name of the new photo file that was uploaded via the request using the `getClientOriginalName()` method,
+                    // then assign it to the `$Client->photo` property to store it in the database.
 
-                $this->deleteFile($Client->photo);
-                // Delete the previously uploaded photo file from the server using the `deleteFile()` function.
+                    $this->uploadFile($request, 'photo', 'Client-Attachments');
+                    // Upload the new photo file to the server using the `uploadFile()` function.
+                    // Save the updated `$Client` object to the database.
+                }
+                $Client->save();
+            } else {
+                $Client->first_name = $request->first_name;
+                $Client->last_name = $request->last_name;
+                $Client->email = $request->email;
+                $Client->phone = $request->phone;
+                $Client->country_id = $request->country_id;
+                $Client->state_id = $request->state_id;
+                $Client->city_id = $request->city_id;
+                $Client->postal_code = $request->postal_code;
+                $Client->address = $request->address;
+                if ($request->hasFile('photo')) {
+                    // Check if a photo was uploaded through the request via the `hasFile()` method.
 
-                $photo = $request->file('photo')->getClientOriginalName();
-                $Client->photo = $photo;
-                // Retrieve the name of the new photo file that was uploaded via the request using the `getClientOriginalName()` method,
-                // then assign it to the `$Client->photo` property to store it in the database.
+                    $this->deleteFile($Client->photo);
+                    // Delete the previously uploaded photo file from the server using the `deleteFile()` function.
 
-                $this->uploadFile($request, 'photo', 'Client-Attachments');
-                // Upload the new photo file to the server using the `uploadFile()` function.
+                    $photo = $request->file('photo')->getClientOriginalName();
+                    $Client->photo = $photo;
+                    // Retrieve the name of the new photo file that was uploaded via the request using the `getClientOriginalName()` method,
+                    // then assign it to the `$Client->photo` property to store it in the database.
+
+                    $this->uploadFile($request, 'photo', 'Client-Attachments');
+                    // Upload the new photo file to the server using the `uploadFile()` function.
+                    // Save the updated `$Client` object to the database.
+               
+                }
+                $Client->save();
             }
 
-            $Client->save();
-            // Save the updated `$Client` object to the database.
+
 
             return redirect()->route('clients.index')->with('status', 'Client details updated successfully.');
             // Redirect the user to the Clients page and show a success message using the `session()` function.
