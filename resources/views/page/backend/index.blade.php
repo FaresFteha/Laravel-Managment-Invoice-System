@@ -102,7 +102,7 @@
                 <!--/.bg-holder-->
 
                 <div class="card-body position-relative">
-                    <h6>إجمالي العملاء<span class="badge badge-soft-warning rounded-pill ms-2">100%</span></h6>
+                    <h6>إجمالي العملاء<span class="badge badge-soft-warning rounded-pill ms-2"></span></h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-warning"
                         data-countup='{"endValue":{{ \App\Models\Client::count() ?? '0' }}}'>0</div>
                 </div>
@@ -116,7 +116,7 @@
                 <!--/.bg-holder-->
 
                 <div class="card-body position-relative">
-                    <h6>إجمالي الفواتير<span class="badge badge-soft-info rounded-pill ms-2">100%</span></h6>
+                    <h6>إجمالي الفواتير<span class="badge badge-soft-info rounded-pill ms-2"></span></h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-info"
                         data-countup='{"endValue":{{ \App\Models\Invoice::count() ?? '0' }}}'>0</div>
                 </div>
@@ -130,7 +130,7 @@
                 <!--/.bg-holder-->
 
                 <div class="card-body position-relative">
-                    <h6>إجمالي المنتجات<span class="badge badge-soft-success rounded-pill ms-2">100%</span></h6>
+                    <h6>إجمالي المنتجات<span class="badge badge-soft-success rounded-pill ms-2"></span></h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-success"
                         data-countup='{"endValue":{{ \App\Models\Product::count() ?? '0' }}}'>0</div>
                 </div>
@@ -144,13 +144,14 @@
                 <!--/.bg-holder-->
 
                 <div class="card-body position-relative">
-                    <h6>إجمالي الفواتير المدفوعة<span class="badge badge-soft-primary rounded-pill ms-2">
-                            @if (\App\Models\Invoice::count() > 0)
-                                {{ round((\App\Models\Payment::where(['status' => 'مدفوع'])->orWhere(['status' => 'مدفوع جزئياً'])->count() / \App\Models\Payment::count()) *100) }}%
-                            @else
-                                0%
-                            @endif
-                        </span></h6>
+                    <h6>إجمالي الفواتير المدفوعة</h6>
+                    {{-- <span class="badge badge-soft-primary rounded-pill ms-2">
+                        @if (\App\Models\Invoice::count() > 0)
+                            {{ round((\App\Models\Payment::where(['status' => 'مدفوع'])->orWhere(['status' => 'مدفوع جزئياً'])->count() / \App\Models\Payment::count()) *100 )}}% 
+                        @else
+                            0%
+                        @endif
+                    </span --}}
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-primary"
                         data-countup='{"endValue":{{ \App\Models\Payment::where(['status' => 'مدفوع'])->orWhere(['status' => 'مدفوع جزئياً'])->count() ?? '0' }}}'>
                         0</div>
@@ -166,14 +167,14 @@
 
                 <div class="card-body position-relative">
                     <h6>إجمالي الفواتير غير المدفوعة
-
+{{-- 
                         <span class="badge badge-soft-danger rounded-pill ms-2">
                             @if (\App\Models\Invoice::count() > 0)
-                                {{ round((\App\Models\Payment::where('status', 'غير مدفوعة')->count() / \App\Models\Payment::count()) * 100) }}%
+                                {{ round((\App\Models\Payment::where('status', 'غير مدفوعة')->count() / \App\Models\Payment::count()) * 100) ?? '0' }}%
                             @else
                                 0%
                             @endif
-                        </span>
+                        </span> --}}
                     </h6>
                     <div class="display-4 fs-4 mb-2 fw-normal font-sans-serif text-danger"
                         data-countup='{"endValue":  {{ \App\Models\Payment::where(['status' => 'غير مدفوعة'])->count() ?? '0' }}}'>

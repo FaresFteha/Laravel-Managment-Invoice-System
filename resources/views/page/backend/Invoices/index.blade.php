@@ -108,8 +108,14 @@
                                                 <th class="align-middle">{{ $items->due_date }}</th>
                                                 <th class="align-middle">${{ $items->unit_price }}</th>
                                                 <th class="align-middle">${{ $items->amount }}</th>
-                                                <th class="align-middle">${{ $items->remaining_amount }}</th>
-                                               
+                                                @if ($items->remaining_amount == '0')
+                                                    <th class="align-middle"><span class="badge badge-soft-success">تم دفع
+                                                            الفاتورة بالكامل </span>
+                                                    </th>
+                                                @else
+                                                    <th class="align-middle">${{ $items->remaining_amount }}</th>
+                                                @endif
+
                                                 <!-- Start Status value  -->
                                                 @if ($items->value_status == 1)
                                                     <th class="align-middle"><span class="badge bg-warning">تحت
@@ -174,8 +180,7 @@
                                                         $payments = App\Models\Payment::pluck('payment_amount');
                                                         ?>
                                                         @can('دفع الفواتير')
-                                                            @if ($items->amount == $payments)
-                                                                {{ 'Fares' }}
+                                                            @if ($items->remaining_amount == '0')
                                                             @else
                                                                 <a class="dropdown-item" type="button"
                                                                     data-bs-toggle="modal"

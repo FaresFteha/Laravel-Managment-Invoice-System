@@ -69,6 +69,10 @@
                                     <span>{{ $products->unit_price }}</span>
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="form-label" for="first_name">عدد الوحدات:</label>
+                                    <span>{{ $products->unit_count }}</span>
+                                </div>
+                                <div class="col-md-6">
                                     <label class="form-label" for="first_name">الوصف:</label>
                                     <span >{{ $products->description}}</span>
                                 </div>

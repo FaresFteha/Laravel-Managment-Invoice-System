@@ -79,7 +79,7 @@
                                 <div class="form-group">
                                     <strong>كلمة السر:</strong>
                                     <input type="password" id="password" name="password" placeholder="كلمة السر"
-                                        class="form-control" value="{{ $user->password }}">
+                                        class="form-control">
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="checkbox" class="form-check-input" onclick="Password()" id="exampleCheck1">
@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                     <strong> تاكيد كلمة السر:</strong>
                                     <input type="password" id="password2" name="confirm-password"
-                                        placeholder="تاكيد كلمة السر" value="{{ $user->password }}" class="form-control">
+                                        placeholder="تاكيد كلمة السر"  class="form-control">
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="checkbox" class="form-check-input" onclick="confirmPassword()"

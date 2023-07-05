@@ -72,7 +72,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label" for="category_id">الفئة:</label>
                             <select class="form-select js-choice" id="category_id" name="category_id"
                                 class="@error('category_id') is-invalid @enderror" value="{{ old('category_id') }}">
@@ -87,7 +87,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label" for="unit_price">سعر الوحدة*</label>
                             <input class="form-control" id="unit_price" name="unit_price" type="number" autocomplete="off"
                                 value="{{ old('unit_price', $products->unit_price) }}"
@@ -96,6 +96,13 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label" for="unit_count">عدد الوحدات*</label>
+                            <input class="form-control" id="unit_count" name="unit_count" type="number" autocomplete="off"
+                                value="{{ old('unit_count', $products->unit_count) }}" required />
+                        </div>
+
                         <br>
                         <br>
                         <div class="mb-3">
@@ -109,10 +116,11 @@
 
                         {{-- About Photo --}}
                         <div class="mb-3">
-                            <label class="col-form-label" for="photos">صورة المنتج:<small style="color: red">أنواع الملفات المسموح بها: png, jpg, jpeg.</small></label>
+                            <label class="col-form-label" for="photos">صورة المنتج:<small style="color: red">أنواع
+                                    الملفات المسموح بها: png, jpg, jpeg.</small></label>
                             <div class="col-sm-10">
-                                <input class="form-control" id="photo" name="photo" type="file" accept="image/*"
-                                value="{{ $products->photo }}"  data-fouc  />
+                                <input class="form-control" id="photo" name="photo" type="file"
+                                    accept="image/*" value="{{ $products->photo }}" data-fouc />
                             </div>
                             <div class="mb-3">
                                 <img class="rounded-circle shadow-sm" style="width: 100px" height="100px"
@@ -123,9 +131,10 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror --}}
                             <br>
-                            <div class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
+                            <div
+                                class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
                                 <button class="btn btn-primary mt-3 px-5" type="submit">تحديث &amp; منتج</button>
-                              </div>
+                            </div>
                         </div>
                     </form>
                 </div>

@@ -14,6 +14,7 @@
                         <form action="{{ route('payment.store') }}" method="POST">
                             @csrf
                             <input type="hidden" id="id" name="id" value="{{ $items->id }}">
+                            <input type="hidden" id="client_id" name="client_id" value="{{ $items->client->id }}">
                             <input type="hidden" id="remaining_amount" name="remaining_amount" value="{{ $items->remaining_amount }}">
                             <div class="row">
                                 @php

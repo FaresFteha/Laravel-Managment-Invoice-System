@@ -26,6 +26,11 @@
                             alt="" width="58" /><span
                             class="font-sans-serif fw-bolder fs-5 d-inline-block">pyfatora</span></a>
                     <div class="card">
+                        @if (\Session::has('message'))
+                            <div class="alert alert-danger">
+                                <li>{!! \Session::get('message') !!}</li>
+                            </div>
+                        @endif
                         <div class="card-body p-4 p-sm-5">
                             <div class="row flex-between-center mb-2">
                                 <div class="col-auto">
@@ -33,8 +38,10 @@
                                 </div>
 
                             </div>
+
                             <form action="{{ route('login') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="type" value="{{ $type }}">
                                 <div class="mb-3">
                                     <input id="email" type="text"
                                         class="form-control @error('email') is-invalid @enderror" name="email"

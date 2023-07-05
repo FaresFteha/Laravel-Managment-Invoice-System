@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\InvoiceCreate;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\AttachFilesTrait;
+use App\Models\Product;
 use Illuminate\Support\Facades\Notification;
 use App\RepositoryInterface\InvoiceRepositoryInterface;
 
@@ -76,6 +77,9 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             $invoice->value_status = 1;
             $invoice->currency = $request->currency;
             $invoice->product_id = $request->product_id;
+
+
+
             $invoice->quantity = $request->quantity;
             $invoice->unit_price = $request->unit_price;
             $invoice->amount_commission = $request->amount_commission;
@@ -85,6 +89,28 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             $invoice->amount = $request->amount;
             $invoice->remaining_amount = $request->amount;
             $invoice->created_by = Auth::user()->name;
+            if ($request->quantity > $invoice->product->unit_count) {
+                // Redirect the user to the invoices index page.
+                toastr()->error('المنتج لا يحتوي على مخزون كافٍ. يحتوي فقط على وحدات ');
+                return redirect()->route('invoices.index');
+            } else {
+
+                $decrease_product = $invoice->product->unit_count -= $request->quantity;
+                $invoice->product->unit_count = $decrease_product;
+                $invoice->product->save();
+            }
+
+            if ($invoice->product->unit_count == 0) {
+                $invoice->product->status = "غير متاح في المخزون";
+                $invoice->product->stock_defective = 0;
+                $invoice->product->save();
+            } else {
+                $invoice->product->status = "متاح في المخزون";
+                $invoice->product->stock_defective = 1;
+                $invoice->product->save();
+            }
+
+
 
             // Save the new invoice to the database.
             $invoice->save();
@@ -217,6 +243,27 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             $invoice->value_vat = $request->value_vat;
             $invoice->amount = $request->amount;
             $invoice->created_by = Auth::user()->name;
+
+            if ($request->quantity > $invoice->product->unit_count) {
+                // Redirect the user to the invoices index page.
+                toastr()->error('المنتج لا يحتوي على مخزون كافٍ. يحتوي فقط على وحدات ');
+                return redirect()->route('invoices.index');
+            } else {
+
+                $decrease_product = $invoice->product->unit_count -= $request->quantity;
+                $invoice->product->unit_count = $decrease_product;
+                $invoice->product->save();
+            }
+
+            if ($invoice->product->unit_count == 0) {
+                $invoice->product->status = "غير متاح في المخزون";
+                $invoice->product->stock_defective = 0;
+                $invoice->product->save();
+            } else {
+                $invoice->product->status = "متاح في المخزون";
+                $invoice->product->stock_defective = 1;
+                $invoice->product->save();
+            }
 
             // Save the updated invoice record to the database
             $invoice->save();

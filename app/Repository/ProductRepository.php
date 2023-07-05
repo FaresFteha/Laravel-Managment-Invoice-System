@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Http\Traits\AttachFilesTrait;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\RepositoryInterface\ProductRepositoryInterface;
 
@@ -44,8 +45,15 @@ class ProductRepository implements ProductRepositoryInterface
             $Product->code = $request->code;
             $Product->category_id = $request->category_id;
             $Product->unit_price = $request->unit_price;
+            $Product->unit_count = $request->unit_count;
             $Product->description = $request->description;
-
+            if ($Product->unit_count > 0) {
+                $Product->status = "متاح في المخزن";
+                $Product->stock_defective = 1;
+            } else {
+                $Product->status = "غير متاح في المخزن";
+                $Product->stock_defective = 0;
+            }
             // Check if a photo file was uploaded with the request, and if so, assign the filename to the Product model's `photo` property and upload the file to the 'Product-Attachments' directory.
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo')->getClientOriginalName();
@@ -126,15 +134,20 @@ class ProductRepository implements ProductRepositoryInterface
     public function destroy($request)
     {
         // Call the `deleteProduct()` method and pass in the value of 'photo' from `$request` to delete the file stored in the server.
-        $this->deleteProduct($request->photo);
 
-        // Delete a Product model instance by ID from the `$request`
-        Product::destroy($request->id);
-
-        // Alert user that the product was deleted
-        deleteAlert();
-
-        // Redirect the user to the `products.index` page after deletion
-        return redirect()->route('products.index');
+        $productId = Invoice::where('product_id', $request->id)->pluck('product_id');
+        if ($productId->count() == 0) {
+            $this->deleteProduct($request->photo);
+            // Delete a Product model instance by ID from the `$request`
+            Product::destroy($request->id);
+            // Alert user that the product was deleted
+            deleteAlert();
+            // Redirect the user to the `products.index` page after deletion
+            return redirect()->route('products.index');
+        } else {
+            toastr()->error('لم يتم الحذف يوجد بيانات متعلقة به ,العملية فاشلة.');
+            // Redirect the user to the `products.index` page after deletion
+            return redirect()->route('products.index');
+        }
     }
 }

@@ -69,6 +69,8 @@ class PaymentRepository implements PaymentRepositoryInterface
             $payment->payment_date = $request->payment_date;
             $payment->payment_mode = $request->payment_mode;
             $payment->status = $request->status;
+            $payment->client_id = $request->client_id;
+            
             $payment->created_by = Auth::user()->name;
 
             // Save the new Payment instance to the database

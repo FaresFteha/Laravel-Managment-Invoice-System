@@ -149,7 +149,7 @@ class UserController extends Controller
                 // Make sure email address is unique, except for the user with the given ID
                 Rule::unique('users', 'email')->ignore($id)
             ],
-            'password' => 'required|same:confirm-password', // Password field is required and should match the confirm password field
+            'password' => 'same:confirm-password', // Password field is required and should match the confirm password field
 
             'roles_name' => ['required'] // Make sure at least one role is selected
         ]);

@@ -61,6 +61,7 @@
                                             <th class="align-middle">#</th>
                                             <th class="align-middle">الصورة</th>
                                             <th class="align-middle">الاسم / رمز المنتج:</th>
+                                            <th class="align-middle">المخزون</th>
                                             <th class="align-middle white-space-nowrap pe-3">العمليات</th>
                                         </tr>
                                     </thead>
@@ -81,11 +82,20 @@
                                                 </th>
                                                 <th class="align-middle">{{ $items->name }}<br>
                                                     <a
-                                                    @can('عرض تفاصيل المنتجات')
+                                                        @can('عرض تفاصيل المنتجات')
                                                     href="{{ route('products.show', $items->id) }}"
                                                     @endcan><strong>{{ $items->code }}</strong></a>
 
                                                 </th>
+
+                                                @if ($items->stock_defective == 1)
+                                                    <th class="align-middle"><label class="badge badge-soft-success">متاح في
+                                                            المخزن</span></th>
+                                                @else
+                                                    <th class="align-middle"><span class="badge badge-soft-danger">غير متاح في
+                                                            المخزن</span></th>
+                                                @endif
+
                                                 <td class="align-middle">
                                                     <div>
                                                         @can('تعديل المنتجات')

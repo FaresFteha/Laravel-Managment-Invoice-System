@@ -69,8 +69,10 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="row">
+                            
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label" for="category_id">الفئة:</label>
                             <select class="form-select js-choice" id="category_id" name="category_id"
                                 class="@error('category_id') is-invalid @enderror" value="{{ old('category_id') }}">
@@ -84,7 +86,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label" for="unit_price">سعر الوحدة*</label>
                             <input class="form-control" id="unit_price" name="unit_price" type="number" autocomplete="off"
                                 value="{{ old('unit_price') }}" class="@error('unit_price') is-invalid @enderror" />
@@ -92,6 +94,13 @@
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label" for="unit_count">عدد الوحدات*</label>
+                            <input class="form-control" id="unit_count" name="unit_count" type="number" autocomplete="off"
+                                value="{{ old('unit_count') }}" required />
+                        </div>
+
                         <br>
                         <br>
                         <div class="mb-3">

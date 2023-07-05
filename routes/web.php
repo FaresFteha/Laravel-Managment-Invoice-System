@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceStatusController;
 use App\Http\Controllers\InvoiceArchiveController;
 use App\Http\Controllers\InvoiceAttachmentsController;
@@ -26,18 +28,25 @@ use App\Http\Controllers\InvoiceAttachmentsController;
 |
 */
 
-Auth::routes(['register' => false]);
+Auth::routes(['register' => false, 'login' => false, 'logout' => false]);
 
-Route::get('/', function () {
-    return view('auth.login');
+
+Route::get('/', [HomeController::class, 'selectionAuth'])->name('selection');
+
+Route::namespace('Auth')->group(function () {
+    Route::get('/login/{type}', [LoginController::class, 'loginForm'])->name('login.show');
+    Route::post('login', [LoginController::class, 'login'])->name('login');
+    Route::get('logout/{type}', [LoginController::class, 'logout'])->name('logout');
 });
 
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
-    ->name('home')
-    ->middleware('auth');
+
 
 Route::prefix('dasboared')->middleware('auth')->group(function () {
+
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])
+        ->name('home');
+
     // Client route
     Route::get('states-list', [ClientController::class, 'getStates'])->name('states-list');
     Route::get('cities-list', [ClientController::class, 'getCities'])->name('cities-list');
