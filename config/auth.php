@@ -36,15 +36,31 @@ return [
     */
 
     'guards' => [
+
+        //Guard web with api
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
 
+        'api-users' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        //Guard client with api
         'client' => [
             'driver' => 'session',
             'provider' => 'clients',
         ],
+
+        'api-clients' => [
+            'driver' => 'jwt',
+            'provider' => 'clients',
+            'hash' => false,
+        ],
+
     ],
 
     /*
